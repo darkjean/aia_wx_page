@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>产品信息</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="pro_infos">
+    <div class="product-header"></div>
+    <div class="product-tit">
+        <img src="img/logo.png">
+        {{product.title}}
+    </div>
+    <div class="product-main">
+        <div class="name">{{product_nm}}</div>
+        <div class="intro-list2" v-html="_html"></div>
+    </div>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    var app = new Vue({
+        el: '.pro_infos',
+        data:{
+            product:[],
+            _html:"",
+            product_nm:""
+        },
+        created:function(){
+            $.ajax({ url: "http://aiahigh.s-csh.com/api/product?args[]="+getQueryString("nid"),
+                dataType:"json",
+                success: function(res){
+                    app.product=res;
+                    app._html=res.contents[getQueryString("id")].content;
+                    app.product_nm=res.contents[getQueryString("id")].title;
+                }});
+        },
+        methods:{
+            goinfo:function(event){
+                window.location.href="product_information.html?nid="+event.target.title;
+            }
+        }
+    })
+</script>
+</body>
+</html>

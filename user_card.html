@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>个人名片</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+    <script src="http://aiahigh.s-csh.com/api/v1/js/275fee8c-5c64-4441-b92c-14b5163fa1f8/wechat"></script>
+    <script>
+        window.share = {
+            imgUrl:  'http://aiahigh.s-csh.com/html/img/share.jpg',
+            link: window.location.origin + window.location.pathname,
+            title: "个人名片",
+            desc1: "个人名片个人名片个人名片个人名片"
+        };
+        wx.ready(function() {
+            wx.checkJsApi({
+                jsApiList: ['getNetworkType', 'previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline', 'onMenuShareQQ', 'onMenuShareWeibo', 'showOptionMenu'],
+                success: function(res) {
+                }
+            });
+            changeShare();
+
+        });
+        function changeShare() {
+            wx.onMenuShareAppMessage({
+                title: window.share.title,
+                desc: window.share.desc1,
+                link: window.share.link,
+                imgUrl: window.share.imgUrl,
+                trigger: function(res) {
+                    console.log('用户点击发送给朋友');
+                    //alert(window.share.link);
+                },
+                success: function(res) {
+                    console.log('已分享');
+
+                },
+                cancel: function(res) {
+                    console.log('已取消');
+                },
+                fail: function(res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+            //console.log('已注册获取“发送给朋友”状态事件');
+            // };
+
+            // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+            //document.querySelector('#onMenuShareTimeline').onclick = function() {
+            wx.onMenuShareTimeline({
+                title: window.share.title,
+                desc: window.share.desc1,
+                link: window.share.link,
+                imgUrl: window.share.imgUrl,
+                trigger: function(res) {
+                    console.log('用户点击分享到朋友圈');
+                    //alert(window.share.link);
+                },
+                success: function(res) {
+                    console.log('已分享');
+
+                },
+                cancel: function(res) {
+                    console.log('已取消');
+                },
+                fail: function(res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+            //console.log('已注册获取“分享到朋友圈”状态事件');
+            //};
+
+            // 2.3 监听“分享到QQ”按钮点击、自定义分享内容及分享结果接口
+            //document.querySelector('#onMenuShareQQ').onclick = function() {
+            wx.onMenuShareQQ({
+                title: window.share.title,
+                desc: window.share.desc1,
+                link: window.share.link,
+                imgUrl: window.share.imgUrl,
+                trigger: function(res) {
+                    console.log('用户点击分享到QQ');
+                },
+                complete: function(res) {
+                    console.log(JSON.stringify(res));
+                },
+                success: function(res) {
+                    console.log('已分享');
+
+                },
+                cancel: function(res) {
+                    console.log('已取消');
+                },
+                fail: function(res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+            ////console.log('已注册获取“分享到 QQ”状态事件');
+            //	};
+
+            // 2.4 监听“分享到微博”按钮点击、自定义分享内容及分享结果接口
+            //document.querySelector('#onMenuShareWeibo').onclick = function() {
+            wx.onMenuShareWeibo({
+                title: window.share.title,
+                desc: window.share.desc1,
+                link: window.share.link,
+                imgUrl: window.share.imgUrl,
+                trigger: function(res) {
+                    console.log('用户点击分享到微博');
+                },
+                complete: function(res) {
+                    console.log(JSON.stringify(res));
+                },
+                success: function(res) {
+                    console.log('已分享');
+
+                },
+                cancel: function(res) {
+                    console.log('已取消');
+                },
+                fail: function(res) {
+                    console.log(JSON.stringify(res));
+                }
+            });
+            //console.log('已注册获取“分享到微博”状态事件');
+            //};
+            /*var shareData = {
+             title : window.share.title,
+             desc : window.share.desc1,
+             link : window.share.link,
+             imgUrl : window.share.imgUrl,
+             };
+             wx.onMenuShareAppMessage(shareData);
+             wx.onMenuShareTimeline(shareData);*/
+            wx.showOptionMenu();
+        }
+    </script>
+</head>
+<body class="main">
+<div class="header-info">
+    <div class="u-f">
+            <img v-bind:src="infos.头像" class="user-head">
+    </div>
+    <h3>{{infos.姓名}}</h3>
+    <p><span>{{infos.会员身份}}</span>｜<span>{{infos.分公司}}</span></p>
+</div>
+<div class="card-show-list">
+    <a href="javascript:" data-url="my_collection.html" class="list-cl">我的收藏<i></i></a>
+    <a href="javascript:" data-url="card_show.html" class="list-cl">我的名片<i></i></a>
+    <a href="javascript:" data-url="http://www.aia.com.cn/zh-cn/aia.html" class="list-cl">关于友邦<i></i></a>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+
+    $(".card-show-list a").click(function(){
+        window.location.href =$(this).attr("data-url")+"?openid="+getQueryString("openid")
+    })
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+    var app = new Vue({
+        el: '.header-info',
+        data: {
+            infos: []
+        },
+        created: function () {
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/aia/user/info/"+getQueryString("openid"),
+                dataType: "JSON",
+                type:"GET",
+                success: function (res) {
+                    if(res.status=="success"){
+
+                    }
+                    else{
+                        window.location.href ="login.html?openid="+getQueryString("openid");
+                    }
+
+                }
+            });
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/namecard/?args[]="+getQueryString("openid"),
+                dataType: "JSON",
+                type:"GET",
+                success: function (res) {
+                    app.infos = res;
+                }
+            });
+        },
+        methods: {
+            goinfo: function (event) {
+                window.location.href = "product_information.html?nid=" + event.target.title;
+            }
+        }
+    })
+</script>
+</body>
+</html>

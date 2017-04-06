@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>传世之星俱乐部</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="search-box">
+    <input type="text" placeholder="请输入关键词">
+    <i></i>
+    <a href="javascript:" class="search-btn">搜索</a>
+</div>
+<div class="hot-news">
+    <div class="tit"></div>
+    <div class="collection-list">
+        <div v-for="data in datas" class="collection-cl">
+            <a v-on:click="goinfo" href="javascript:" v-bind:title="data.nid">
+                <div class="fl" v-bind:title="data.nid">
+                    <img v-bind:src="data.cover" v-bind:title="data.nid">
+                </div>
+                <div class="fr" v-bind:title="data.nid">
+                    <p v-bind:title="data.nid">{{data.title}}</p>
+                    <span v-bind:title="data.nid">{{data.post_date}}</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+
+    var _city;
+ function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+    var app = new Vue({
+        el: '.hot-news',
+        data: {
+            datas: []
+        },
+        created: function () {
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/awards?args[]="+getQueryString("id"),
+                dataType: "JSON",
+                success: function (res) {
+                    app.datas = res;
+                    $(".tit").text("传世之星-"+res[0].city);
+                    _city=res[0].city;
+                }
+            });
+        },
+        methods: {
+            goinfo: function (event) {
+                window.location.href = "chuanshizhixing_show.html?nid=" + event.target.title+"&openid="+getQueryString("openid");
+            },
+            existing:function(a,b){
+                if(a.existing.join("").search(b)!="-1"){
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
+        }
+    })
+        $(".search-btn").click(function(){
+        if($(".search-box input").val()!=""){
+        window.location.href ="chuanshizhixing_sch.html?openid="+getQueryString("openid")+"&key="+$(".search-box input").val()+"&city="+_city;
+        }})
+</script>
+</body>
+</html>

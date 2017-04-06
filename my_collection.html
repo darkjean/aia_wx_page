@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>我的收藏</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="my-collection">
+    <div class="tit">我的收藏</div>
+    <div class="collection-list">
+        <div v-for="(info,index) in infos" class="collection-cl">
+            <a v-on:click="goinfo(index)" href="javascript:" data-href="news_show.html" v-bind:title="info.nid" v-bind:index="info.type">
+                <div class="fl"  v-bind:title="info.nid" v-bind:index="info.type">
+                    <img v-if="ifknowledge_cover(index)" v-bind:src="info.knowledge_cover"  v-bind:title="info.nid" v-bind:index="info.type">
+                    <img v-if="ifaward_cover(index)" v-bind:src="info.award_cover"  v-bind:title="info.nid" v-bind:index="info.type">
+                </div>
+                <div class="fr"  v-bind:title="info.nid" v-bind:index="info.type">
+                    <p  v-bind:title="info.nid" v-bind:index="info.type">{{info.title}}</p>
+                    <span  v-bind:title="info.nid" v-bind:index="info.type">{{info.post_date}}</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+    var app = new Vue({
+        el: '.my-collection',
+        data: {
+            infos: []
+        },
+        created: function () {
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/user_favorite?args[]="+getQueryString("openid"),
+                dataType: "JSON",
+                type:"GET",
+                success: function (res) {
+                    app.infos = res;
+                }
+            });
+        },
+        methods: {
+            goinfo: function (a) {
+                if(app.infos[a].type=="AIA 知识分享"){
+                window.location.href = "news_show.html?nid=" + event.target.title+"&openid="+getQueryString("openid");
+            }
+            else{
+                window.location.href = "chuanshizhixing_show.html?nid=" + event.target.title+"&openid="+getQueryString("openid");
+            }
+            },
+            ifknowledge_cover:function(a){
+                if(app.infos[a].knowledge_cover.length>5){
+                    return true
+                }
+                else{
+                    return false
+                }
+            },
+            ifaward_cover:function(a){
+                if(app.infos[a].award_cover.length>5){
+                    return true
+                }
+                else{
+                    return false
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

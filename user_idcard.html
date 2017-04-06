@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html style="background:#e3ddcf">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>关于友邦</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="id-card">
+    <div class="icon-lt">
+        <a href="javascript:" class="tel"><img src="img/icon1.png"></a>
+        <a href="javascript:" class="wx"><img src="img/icon2.png"></a>
+        <a href="javascript:" class="email"><img src="img/icon3.png"></a>
+    </div>
+    <h4>姓名是是是</h4>
+    <div class="infos">分公司：<span>qwfq</span><i>|</i>职务：<span>qewfqwe</span></div>
+    <a href="javascript:" class="show-info"><img src="img/zankai3_icon.png"></a>
+    <div class="info-tb">
+        <p>
+            <span>手机号</span>
+            <em>415641564</em>
+        </p>
+        <p>
+            <span>展业号</span>
+            <em>415641564</em>
+        </p>
+        <p>
+            <span>办公所在区域</span>
+            <em><img src="img/icon5.png">415641564</em>
+        </p>
+        <p>
+        <span>其他联系方式</span>
+            <em><img src="img/icon2.png">415641564</em>
+        </p>
+        <p>
+            <span></span>
+            <em><img src="img/icon3.png">415641564</em>
+        </p>
+        <p>
+            <span>主要服务区</span>
+            <em>415641564</em>
+        </p>
+        <p>
+            <a href="javascript:" class="cls-info"><img src="img/shousuo_icon.png"></a>
+        </p>
+    </div>
+    <div class="txt">
+        <h3>友邦保险有限公司上海分公司（登记名称）</h3>
+        <p>地址：上海市黄浦区中山东一路17号友邦大厦3-8楼<br/>
+        邮编：200002    电话：(8621) 5359 9888</p>
+    </div>
+    <div class="txt">
+        <h3>友邦保险有限公司上海分公司（登记名称）</h3>
+        <p>地址：上海市黄浦区中山东一路17号友邦大厦3-8楼<br/>
+            邮编：200002    电话：(8621) 5359 9888</p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".show-info").click(function(){
+        $(this).hide();
+        $(".info-tb").addClass("cur");
+    })
+    $(".cls-info").click(function(){
+        $(".show-info").show();
+        $(".info-tb").removeClass("cur");
+    })
+</script>
+</body>
+</html>

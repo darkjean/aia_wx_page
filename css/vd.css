@@ -1,0 +1,137 @@
+.vd-info {
+  width: 6.8rem;
+  height: auto;
+  margin: .33rem auto;
+  background: #fff;
+  border-radius: .1rem;
+}
+.vd-info .pic {
+  width: 6.78rem;
+  height: 4.08rem;
+  border: .01rem solid #000;
+}
+.vd-info .pic img,
+.vd-info .pic video {
+  width: 6.78rem;
+  height: 4.08rem;
+  background-color: #000
+}
+.vd-info .titv {
+  width: 100%;
+  height: .72rem;
+  text-align: center;
+  line-height: .72rem;
+  background: #a28d76;
+  color: #e3ddcf;
+  font-size: .3rem;
+  overflow: hidden;
+}
+.vd-info .infov {
+  width: 100%;
+  height: auto;
+  padding: .45rem 0;
+}
+.vd-info .infov .h {
+  width: 1.34rem;
+  height: .43rem;
+  background: #a28d76;
+  color: #e3ddcf;
+  text-align: center;
+  font-size: .24rem;
+  line-height: .43rem;
+  border-radius: .1rem;
+  margin-left: .4rem;
+}
+.vd-info .infov p {
+  width: 6rem;
+  margin: .17rem 0 .4rem .4rem;
+  font-size: .3rem;
+  line-height: .42rem;
+  color: #1d1d1d;
+}
+.ques-ans {
+  width: 6.8rem;
+  height: auto;
+  margin: .33rem auto;
+  border-radius: .1rem;
+}
+.ques-ans .ans-list {
+  width: 100%;
+  margin-top: .36rem;
+}
+.ques-ans .ans-list .tita {
+  width: 100%;
+  height: .77rem;
+  line-height: .77rem;
+  color: #e3ddcf;
+  background: #a28d76;
+  text-indent: 1em;
+  font-size: .32rem;
+}
+.ques-ans .ans-list .alt {
+  width: 100%;
+  background: #fff;
+}
+.ques-ans .ans-list .alt a {
+  display: block;
+  padding: .2rem .25rem;
+  width: 6.1rem;
+  height: auto;
+  margin: 0 auto;
+  border-bottom: 1px solid #bfbfbf;
+}
+.ques-ans .ans-list .alt a:last-child {
+  border-bottom: none;
+}
+.ques-ans .ans-list .alt a h5 {
+  color: #1d1d1d;
+  font-size: .32rem;
+  line-height: .43rem;
+  font-weight: normal;
+  margin-bottom: .1rem;
+}
+.ques-ans .ans-list .alt a p {
+  color: #bababa;
+  font-size: .24rem;
+  line-height: .3rem;
+}
+.ques-ans .ques-ipt {
+  width: 6.78rem;
+  height: 4.66rem;
+  border: .01rem solid #cfaf8f;
+  border-radius: .1rem;
+  background: #fff;
+}
+.ques-ans .ques-ipt textarea {
+  display: block;
+  width: 6.38rem;
+  height: 3.1rem;
+  line-height: .4rem;
+  font-size: .28rem;
+  color: #666;
+  padding: .2rem .15rem;
+  border: none;
+  outline: none;
+  resize: none;
+  box-shadow: none;
+  background: transparent;
+  font-family: \5FAE\8F6F\96C5\9ED1;
+}
+.ques-ans .ques-ipt .sbm {
+  width: 100%;
+  height: 1.25rem;
+  border-top: .01rem solid #cfaf8f;
+}
+.ques-ans .ques-ipt .sbm a {
+  display: block;
+  width: 5.95rem;
+  height: .73rem;
+  text-align: center;
+  line-height: .73rem;
+  color: #dac090;
+  background: #a28d76;
+  border-radius: .1rem;
+  margin: .26rem auto;
+  font-size: .32rem;
+  letter-spacing: .1rem;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>国内税务2</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="boxs">
+    <div class="tax-header-intro2">
+    <h3>{{datas[0].name}}</h3>
+    <div class="fl">
+        <img v-bind:src="datas[0].pic">
+    </div>
+    <div class="fr">
+        <p class="sps">{{datas[0].category}}</p>
+        <p>{{datas[0].intro}}</p>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="card-show-list">
+    <a v-on:click="clk1" href="javascript:" data-url="domestic_article.html?id=" class="list-cl">专家文章<i></i></a>
+        <a v-on:click="clk3" v-for="ss in datas[0].contents" v-bind:href="ss.link" v-bind:id="ss.nid" class="list-cl">{{ss.type=="内容"?"专家视频":ss.title}}<i></i></a>
+    <a v-on:click="clk2" href="javascript:" class="list-cl">专家答疑<i></i></a>
+</div>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+
+    var _expert;
+    if(GetQueryString("expert")=="guojishuiwu"){
+        _expert="国际税务"
+    }
+    if(GetQueryString("expert")=="guoneishuiwu"){
+        _expert="国内税务"
+    }
+    if(GetQueryString("expert")=="guoneifalv"){
+        _expert="国内法律"
+    }
+    $("title").text(_expert);
+
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    var app = new Vue({
+        el: '.boxs',
+        data: {
+            datas: []
+        },
+        created: function () {
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/expert?args[]="+_expert,
+                dataType: "JSON",
+                success: function (res) {
+                    app.datas = res;
+                }
+            });
+        },
+        methods: {
+            goinfo: function (event) {
+                window.location.href = "chuanshizhixing_show.html?nid=" + event.target.title;
+            },
+            existing:function(a,b){
+                if(a.existing.join("").search(b)!="-1"){
+                    return true
+                }
+                else {
+                    return false
+                }
+            },
+            clk1:function(){
+                window.location.href = "domestic_article.html?id=" +GetQueryString("expert")+"&openid="+GetQueryString("openid");
+            },
+            clk2:function(){
+       window.location.href = "q&a.html"
+            },
+            clk3:function(event){
+                if(event.target.id){
+                    window.location.href = "domestic_video.html?nid=" +event.target.id+"&openid="+GetQueryString("openid");
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

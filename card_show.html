@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>个人名片</title>
+    <link type="text/css" rel="stylesheet" href="css/global.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            $(window).resize(function () {
+                $("html").css("fontSize", parseInt($(window).width()) / 7.5 + "px");
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="main">
+
+    <div class="header-info">
+        <div class="u-f">
+            <img v-bind:src="infos.头像" class="user-head">
+            <canvas id="canvas_img"></canvas>
+        </div>
+        <h3>{{infos.姓名}}</h3>
+        <p><span>{{infos.会员身份}}</span>｜<span>{{infos.分公司}}</span></p>
+        <input type="file" id="browseFile">
+    </div>
+    <div class="card-show-list">
+        <a href="javascript:" class="list-cl change2" data-change="phone">手机号<span>{{infos.手机}}</span></a>
+        <a href="javascript:" class="list-cl change2" data-change="email">邮箱<span>{{infos.邮箱}}</span></a>
+        <a href="javascript:" class="list-cl change2" data-change="role">展业号<span>{{infos.编号}}</span></a>
+        <a href="javascript:" class="list-cl change2" data-change="bgszqy">办公所在区域<span>{{infos.办公所在区域}}</span></a>
+        <a href="javascript:" class="list-cl change2" data-change="qq">QQ<span>{{infos.QQ}}</span></a>
+        <a href="javascript:" class="list-cl change3" data-change="scxz">擅长险种<span>{{infos.擅长险种}}</span></a>
+        <a href="javascript:" class="list-cl change2" data-change="fwqy">主要服务区域<span>{{infos.服务区域}}</span></a>
+        <a href="javascript:" class="list-cl" data-change="education">
+            学历
+            <select>
+                <option selected disabled>{{infos.学历}}</option>
+                <option>小学</option>
+                <option>初中</option>
+                <option>高中</option>
+                <option>大专</option>
+                <option>本科</option>
+                <option>研究生</option>
+                <option>博士</option>
+            </select>
+        </a>
+        <a href="javascript:" class="list-cl change1" data-change="gzjy">工作经验（年）<span>{{infos.工作经验}}</span></a>
+        <a href="javascript:" class="list-cl change3" data-change="zyrz">专业认证<span>{{infos.专业认证}}</span></a>
+        <a href="javascript:" class="list-cl change3" data-change="ryjx">荣誉奖励<span>{{infos.荣誉奖项}}</span></a>
+    </div>
+    <div class="change-card-ipt1">
+        <div class="ipt">
+            <input type="number" placeholder="请输入工作经验（年）" class="change-experience">
+            <a href="javascript:" class="dlt-ipt"></a>
+        </div>
+        <a href="javascript:" class="submit">保存</a>
+    </div>
+    <div class="change-card-ipt2">
+        <div class="ipt">
+            <input type="text" placeholder="请输入文字内容" class="change-tel">
+            <a href="javascript:" class="dlt-ipt"></a>
+        </div>
+        <a href="javascript:" class="submit">保存</a>
+    </div>
+    <div class="change-card-ipt3">
+        <div class="ipt">
+            <input type="text" placeholder="请输入文字内容" class="change-tel">
+            <a href="javascript:" class="dlt-ipt"></a>
+        </div>
+        <div class="ipt">
+            <input type="text" placeholder="请输入文字内容" class="change-tel">
+            <a href="javascript:" class="dlt-ipt"></a>
+        </div>
+        <div class="ipt">
+            <input type="text" placeholder="请输入文字内容" class="change-tel">
+            <a href="javascript:" class="dlt-ipt"></a>
+        </div>
+        <a href="javascript:" class="add-ipt"></a>
+        <a href="javascript:" class="submit2">保存</a>
+    </div>
+
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+
+    var codes;
+    $.ajax({
+        url: "http://aiahigh.s-csh.com/api/aia/user/info/"+getQueryString("openid"),
+        dataType: "JSON",
+        type:"GET",
+        success: function (res) {
+            codes=res.data.code;
+        }
+    });
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+    var app = new Vue({
+        el: '.main',
+        data: {
+            infos: []
+        },
+        created: function () {
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/namecard/?args[]="+getQueryString("openid"),
+                dataType: "JSON",
+                type:"GET",
+                success: function (res) {
+                    app.infos = res;
+                }
+            });
+        },
+        methods: {
+            goinfo: function (event) {
+                window.location.href = "product_information.html?nid=" + event.target.title;
+            }
+        }
+    })
+</script>
+<script>
+    var ele;
+
+    //点击工作经验
+    $(".change1").click(function(){
+        ele=$(this);
+        $(".change-card-ipt1 input").attr("value",$(this).find("span").text());
+        $(".change-card-ipt1").fadeIn();
+    })
+
+    //点击头像
+    //点击头像
+    $("canvas").click(function(){
+        $("#browseFile").click();
+    })
+    $("#browseFile").change(function (){
+        var file = new FileReader();
+        var MAX_HEIGHT=200;
+        file.onload = function(e){
+            var base64 = e.target.result;
+            var img = new Image();
+            img.src = base64;
+            img.onload = function (){
+                var canvas = $("#canvas_img").get(0);
+                var ctx = canvas.getContext("2d");
+                if(img.height > MAX_HEIGHT) {
+                    img.width *= MAX_HEIGHT / img.height;
+                    img.height = MAX_HEIGHT;
+                }
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                $(".user-head").attr("src",canvas.toDataURL("image/png"));
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/avatar",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        img: canvas.toDataURL("image/png")
+                    },
+                    success: function (res) {
+                        if(res.status=="success"){
+                         alert("上传成功！")
+                        }
+                    }
+                });
+            }
+        };
+        file.readAsDataURL(this.files[0]);
+    });
+
+
+    function previewInImage (file) {
+        var reader = new FileReader();
+        LoadingImage();
+        reader.onload = function( evt ){
+            $.ajax({
+                url: "http://aiahigh.s-csh.com/api/aia/user/avatar",
+                dataType: "JSON",
+                type:"POST",
+                data:{
+                    openid:getQueryString("openid"),
+                    code:codes,
+                    img: evt.target.result
+                },
+                success: function (res) {
+            img_preview.src = evt.target.result;
+            alert(res)
+                }
+            });
+        }
+        Options_image.imgData= reader.readAsDataURL(file);
+    }
+    function LoadingImage(){
+        $(img_preview).css({"width":"","height":""});
+    }
+
+
+    //点击－职务/手机号/邮箱/展业号/办公所在区域/QQ/主要服务区域/
+    $(".change2").click(function(){
+        ele=$(this);
+        $(".change-card-ipt2 input").attr("value",$(this).find("span").text());
+        $(".change-card-ipt2").fadeIn();
+    })
+
+    //点击－擅长险种/专业认证/荣誉奖项
+    $(".change3").click(function(){
+        ele=$(this);
+        $(".change-card-ipt3 input").eq(0).attr("value",$(this).find("span").text());
+        $(".change-card-ipt3").fadeIn();
+    })
+
+    //删除当前
+    $(".dlt-ipt").click(function(){
+        $(this).parent().find("input").val("")
+    })
+    $(".change-card-ipt3").on("click",".dlt-ipt",function(){
+        $(this).parent().find("input").val("")
+    })
+
+    $("select").change(function(){
+        $.ajax({
+            url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+            dataType: "JSON",
+            type:"POST",
+            data:{
+                openid:getQueryString("openid"),
+                code:codes,
+                education:$(this).val()
+            },
+            success: function (res) {
+                console.log(res);
+            }
+        });
+    })
+
+    //保存
+    $(".submit").click(function(){
+        if($(this).parent().find("input").val()!=""){
+            ele.find("span").text($(this).parent().find("input").val());
+            var sets=ele.attr("data-change");
+            if(sets=="phone"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        phone:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="email"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        email:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="role"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        role:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="bgszqy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        bgszqy:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="qq"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        qq:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="scxz"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        scxz:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="fwqy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        fwqy:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="gzjy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        gzjy:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="zyrz"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        zyrz:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="ryjx"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        ryjx:$(this).parent().find("input").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
+        $(this).parent().hide();
+        $(this).parent().find("input").val("");
+    })
+
+    //保存
+    $(".submit2").click(function(){
+        var tst="";
+        for(i=0;i<$(this).parent().find(".ipt").length;i++){
+            if($(this).parent().find(".ipt").eq(i).find("input").val()!=""){
+                tst=tst+' '+$(this).parent().find(".ipt").eq(i).find("input").val();
+            }
+        }
+        if(tst!=""){
+            ele.find("span").text(tst);
+            var sets=ele.attr("data-change");
+            if(sets=="phone"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        phone:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="email"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        email:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="role"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        role:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="bgszqy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        bgszqy:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="qq"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        qq:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="scxz"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        scxz:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="fwqy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        fwqy:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="gzjy"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        gzjy:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="zyrz"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        zyrz:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            else if(sets=="ryjx"){
+                $.ajax({
+                    url: "http://aiahigh.s-csh.com/api/aia/user/namecard",
+                    dataType: "JSON",
+                    type:"POST",
+                    data:{
+                        openid:getQueryString("openid"),
+                        code:codes,
+                        ryjx:tst
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
+        $(this).parent().find(".ipt").find("input").val("");
+        $(this).parent().hide();
+    })
+
+    //新增字段
+    $(".add-ipt").click(function(){
+        $(this).before('<div class="ipt">'+$(this).parent().find(".ipt").html()+'</div>')
+    })
+
+</script>
+</body>
+</html>
